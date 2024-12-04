@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -47,15 +50,37 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LemonadeApp(){
-//    SelectLemon()
-//    SqueezeLemon()
-//    DrinkLemonade()
-    StartOver()
+fun LemonadeApp() {
+    val currentStep = remember { mutableStateOf(1) } // Use `mutableStateOf` without `by`
+    val squeezeCount = remember { mutableStateOf(0) } // Same here
+
+    when (currentStep.value) { // Access value with `.value`
+        1 -> SelectLemon(
+            onClick = {
+                currentStep.value = 2 // Set value using `.value`
+                squeezeCount.value = (2..4).random() // Set value using `.value`
+            }
+        )
+        2 -> SqueezeLemon(
+            onClick = {
+                squeezeCount.value-- // Decrease squeeze count
+                if (squeezeCount.value == 0) {
+                    currentStep.value = 3 // Set value using `.value`
+                }
+            }
+        )
+        3 -> DrinkLemonade(
+            onClick = { currentStep.value = 4 } // Set value using `.value`
+        )
+        4 -> StartOver(
+            onClick = { currentStep.value = 1 } // Set value using `.value`
+        )
+    }
 }
 
+
 @Composable
-fun SelectLemon(modifier: Modifier= Modifier){
+fun SelectLemon(modifier: Modifier= Modifier,onClick: () -> Unit){
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -79,6 +104,7 @@ fun SelectLemon(modifier: Modifier= Modifier){
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .weight(1f)
+                .clickable{onClick()}
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
@@ -93,7 +119,7 @@ fun SelectLemon(modifier: Modifier= Modifier){
 
 }
 @Composable
-fun SqueezeLemon(modifier: Modifier= Modifier){
+fun SqueezeLemon(modifier: Modifier= Modifier,onClick: () -> Unit){
 Column(
     modifier = Modifier
         .fillMaxSize()
@@ -117,6 +143,7 @@ Column(
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .weight(1f)
+            .clickable{onClick()}
     )
     Spacer(modifier = Modifier.height(80.dp))
     Text(
@@ -130,7 +157,7 @@ Column(
 }
 
 @Composable
-fun DrinkLemonade(modifier: Modifier = Modifier){
+fun DrinkLemonade(modifier: Modifier = Modifier,onClick: () -> Unit){
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -155,6 +182,7 @@ fun DrinkLemonade(modifier: Modifier = Modifier){
                 .fillMaxWidth()
                 .padding(16.dp)
                 .weight(1f)
+                .clickable{onClick()}
         )
         Spacer(modifier = Modifier.height(80.dp))
         Text(
@@ -168,7 +196,7 @@ fun DrinkLemonade(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun StartOver(modifier: Modifier = Modifier){
+fun StartOver(modifier: Modifier = Modifier,onClick : () -> Unit){
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -192,6 +220,7 @@ fun StartOver(modifier: Modifier = Modifier){
                 .fillMaxWidth()
                 .padding(16.dp)
                 .weight(1f)
+                .clickable{onClick()}
         )
         Spacer(modifier = Modifier.height(80.dp))
         Text(
@@ -209,9 +238,8 @@ fun StartOver(modifier: Modifier = Modifier){
 @Composable
 fun LemonadePreview() {
     LemonadeTheme {
-        //    SelectLemon()
 //    SqueezeLemon()
 //        DrinkLemonade()
-        StartOver()
+//        StartOver()
     }
 }
