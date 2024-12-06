@@ -238,8 +238,9 @@ fun StartOver(modifier: Modifier = Modifier,onClick : () -> Unit){
 @Composable
 fun LemonadePreview() {
     LemonadeTheme {
-//    SqueezeLemon()
-//        DrinkLemonade()
-//        StartOver()
+   // SqueezeLemon()
+   //     DrinkLemonade()
+   //     StartOver()
+        LemonadeApp() 
     }
 }
