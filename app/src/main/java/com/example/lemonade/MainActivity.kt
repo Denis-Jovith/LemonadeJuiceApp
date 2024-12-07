@@ -235,6 +235,8 @@ fun StartOver(modifier: Modifier = Modifier,onClick : () -> Unit){
 
 }
 
+
+//the preview
 @Preview(showBackground = true)
 @Composable
 fun LemonadePreview() {
