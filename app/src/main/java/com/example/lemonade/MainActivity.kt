@@ -50,7 +50,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 @Composable
 fun LemonadeApp() {
     val currentStep = remember { mutableStateOf(1) } // Use `mutableStateOf` without `by`
